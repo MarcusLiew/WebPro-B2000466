@@ -1,0 +1,3 @@
+FH, Flexi-Hour
+WFH, Work From Home
+H, Hybrid
