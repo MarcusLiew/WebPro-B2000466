@@ -14,3 +14,7 @@
     .bg-flexis-accent, .btn-warning {
         background-color: #ffaa01;
     }
+
+    tbody {
+        background-color: #f3fdff;
+    }

@@ -18,7 +18,7 @@ if ($supervisorID == null)
 </head>
 
 <body>
-    <?php include "employeeNavbar.php" ?>
+    <?php include "employeeNavbar.php"; ?>
 
     <div class="container-fluid row" style="margin-top: 75px;">
         <div class="col-10">
@@ -33,6 +33,10 @@ if ($supervisorID == null)
             <div class="pt-2 pb-2">
                 <h5>Supervisor ID:</h5>
                 <h2><?php echo $supervisorID; ?></h2>
+            </div>
+            <div class="pt-2 pb-2">
+                <h5>FWA Status:</h5>
+                <h2><?php echo $_SESSION['fwaStatus']; ?></h2>
             </div>
         </div>
         <div class="col-2"></div>
