@@ -15,7 +15,12 @@ include "dbConfig.php";
 </head>
 
 <body>
-    <?php include "employeeNavbar.php"; ?>
+    <?php include "employeeNavbar.php";
+    if ($_SESSION['fwaStatus'] == "New") {
+        echo '<script>alert("Your status is New, please change your password!");</script>';
+        echo '<meta http-equiv="refresh" content="0; url=profileSettings.php" />';
+    }
+    ?>
 
     <div class="container-fluid row" style="margin-top: 75px;">
         <div class="col-2"></div>
@@ -65,9 +70,9 @@ include "dbConfig.php";
                             } else {
                                 echo '<input class="pr-5 mr-2 w-100" type="text" value="' . $row['comment'] . '" disabled>';
                             }
-                                echo '</tr>';
-                            }
+                            echo '</tr>';
                         }
+                    }
                     ?>
                 </tbody>
             </table>
