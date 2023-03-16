@@ -71,7 +71,7 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
 
     if ($checkPwdResult->num_rows == 1) {
         if ($newPassword == $confirmPassword) {
-            $updatePwdSql = "UPDATE employeedb SET password = '$newPassword', fwaStatus = 'None' WHERE password = '$oldPassword'";
+            $updatePwdSql = "UPDATE employeedb SET password = '$newPassword', fwaStatus = 'None' WHERE password = '$oldPassword' AND employeeID = '$employeeID'";
             if ($con->query($updatePwdSql) === TRUE) {
                 echo '<script>alert("Password updated successfully!")</script>';
             } else {

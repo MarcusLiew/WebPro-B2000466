@@ -1,3 +1,15 @@
+<?php
+$empID = $_SESSION['employeeID'];
+$checkFWAStatussql = "SELECT * FROM employeedb WHERE employeeID = '$empID'";
+if ($checkFWAStatusResult = $con->query($checkFWAStatussql)) {
+    $employee = mysqli_fetch_array($checkFWAStatusResult);
+    $fwaStatus = $employee['fwaStatus'];
+} else {
+    $fwaStatus = "None";
+}
+$_SESSION['fwaStatus'] = $fwaStatus;
+?>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-flexis-dark fixed-top">
     <a class="navbar-brand" href="employeeDashboard.php">FlexIS</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">

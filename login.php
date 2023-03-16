@@ -3,8 +3,8 @@ session_start();
 include "dbConfig.php";
 
 // Delete outdated FWA requests
-$deleteOutdatedFWAsql = "DELETE FROM fwarequestdb WHERE requestDate < CURDATE()";
-$con->query($deleteOutdatedFWAsql);
+// $deleteOutdatedFWAsql = "DELETE FROM fwarequestdb WHERE requestDate < CURDATE()";
+// $con->query($deleteOutdatedFWAsql);
 ?>
 
 <!DOCTYPE html>
@@ -37,9 +37,9 @@ $con->query($deleteOutdatedFWAsql);
           </form>
         </div>
       </div>
-      <div class="col-lg-7 bg-dark rounded">
-        <h1 class="text-light" style="padding-top: 10px;">Welcome to FlexIS!</h1>
-        <p class="text-light">
+      <div class="col-lg-7 bg-flexis-accent rounded text-dark">
+        <h1 style="padding-top: 10px;">Welcome to FlexIS!</h1>
+        <p>
           This is a web application that allows you to submit FWA requests & schedules.
           As a supervisor, you can review your employees' FWA requests & schedules.
         </p>

@@ -10,13 +10,18 @@ include "dbConfig.php";
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-    <title>Register Employee</title>
+    <title>Submit FWA Request</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     <link rel="stylesheet" href="extra.css" />
 </head>
 
 <body>
-    <?php include "employeeNavbar.php" ?>
+    <?php include "employeeNavbar.php";
+    if ($_SESSION['fwaStatus'] == "New") {
+        echo '<script>alert("Your status is New, please change your password!");</script>';
+        echo '<meta http-equiv="refresh" content="0; url=profileSettings.php" />';
+    }
+    ?>
 
     <div class="container-fluid row" style="margin-top: 75px;">
         <div class="col-2"></div>
@@ -30,11 +35,11 @@ include "dbConfig.php";
                     </div>
                     <div class="form-group form-inline">
                         <label for="requestDate" class="col-lg-2 text-right" style="justify-content: flex-end;">Request Date:</label>
-                        <input type="date" class="form-control sizing col-lg-10" id="requestDate" name="requestDate" required>
+                        <input type="date" class="form-control sizing col-lg-10" id="requestDate" name="requestDate" value="<?php echo date('Y-m-d') ?>" readonly>
                     </div>
                     <div class="form-group form-inline">
                         <label for="workType" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Type:</label>
-                        <select name="workType" id="workType" onchange="toggleLocation()">
+                        <select name="workType" id="workType">
                             <?php
                             $allWorkTypes = file("fwaWorkTypes.txt");
                             foreach ($allWorkTypes as $workType) {
@@ -114,31 +119,16 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
     $supervisorID = $_SESSION['supervisorID'];
     $requestDate = $_POST['requestDate'];
     $workType = $_POST['workType'];
-    /* $workHours = $_POST['workHours'];
-    if (!($workType == "FH" || $workType == "WFH")) {
-        $hybridLocation = $_POST['hLocation'];
-    } */
     $description = $_POST['description'];
     $reason = $_POST['reason'];
 
-    $currentDate = date("Y-m-d");
+    $insertSql = "INSERT INTO fwarequestdb (requestDate, workType, description, reason, status, employeeID, supervisorID)
+        VALUES ('$requestDate', '$workType', '$description', '$reason', 'Pending', '$employeeID', '$supervisorID')";
 
-    if ($requestDate > $currentDate) {
-        if ($workType == "FH" || $workType == "WFH") {
-            $insertSql = "INSERT INTO fwarequestdb (requestDate, workType, description, reason, status, /*workHours, */employeeID, supervisorID)
-        VALUES ('$requestDate', '$workType', '$description', '$reason', 'Pending', /*'$workHours', */'$employeeID', '$supervisorID')";
-        } else {
-            $insertSql = "INSERT INTO fwarequestdb (requestDate, workType, description, reason, status, /*workHours, workLocation, */employeeID, supervisorID)
-        VALUES ('$requestDate', '$workType', '$description', '$reason', 'Pending', /*'$workHours', '$hybridLocation', */'$employeeID', '$supervisorID')";
-        }
-
-        if ($con->query($insertSql) === TRUE) {
-            echo '<script>alert("FWA request submitted!")</script>';
-        } else {
-            echo '<script>alert("Submission unsuccessful: ' . $con->error . '")</script>';
-        }
+    if ($con->query($insertSql) === TRUE) {
+        echo '<script>alert("FWA request submitted!")</script>';
     } else {
-        echo '<script>alert("Request date must be a date after today!")</script>';
+        echo '<script>alert("Submission unsuccessful: ' . $con->error . '")</script>';
     }
 }
 ?>

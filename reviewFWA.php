@@ -15,7 +15,7 @@ include "dbConfig.php";
 </head>
 
 <body>
-    <?php include "employeeNavbar.php" ?>
+    <?php include "employeeNavbar.php"; ?>
 
     <div class="container-fluid row" style="margin-top: 75px;">
         <div class="col-2"></div>
@@ -53,17 +53,21 @@ include "dbConfig.php";
                             echo '>' . $row['status'] . '</td>';
                             echo '<td>' . $row['employeeID'] . '</td>';
                             echo '<td><form method="POST" class="form">';
-                            if ($row['status'] == "Pending") {
+                            if ($row['status'] == "Pending" && $row['requestDate'] >= date('Y-m-d')) {
                                 echo '<input class="pr-5 mr-2 mb-2 w-100" type="text" name="comment" placeholder="Enter comment" id="comment" /><br>';
                                 echo '<input type="hidden" value="' . $row['requestID'] . '" name="requestID" />';
+                                echo '<input type="hidden" value="' . $row['workType'] . '" name="workType" />';
+                                echo '<input type="hidden" value="' . $row['employeeID'] . '" name="employeeID" />';
                                 echo '<button class="btn btn-success mt-1 mr-2" value="Accepted" name="status" type="submit">Accept</button>';
                                 echo '<button class="btn btn-danger mt-1 mr-2" value="Rejected" name="status" type="submit">Reject</button></form></td>';
+                            } else if ($row['requestDate'] < date('Y-m-d') && $row['comment'] == null) {
+                                echo '<p class="font-italic">Request expired!</p>';
                             } else {
                                 echo '<input class="pr-5 mr-2 w-100" type="text" value="' . $row['comment'] . '" disabled>';
                             }
-                            echo '</tr>';
+                                echo '</tr>';
+                            }
                         }
-                    }
                     ?>
                 </tbody>
             </table>
@@ -77,6 +81,8 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
     $comment = $_POST['comment'];
     $status = $_POST['status'];
     $requestID = $_POST['requestID'];
+    $workType = $_POST['workType'];
+    $employeeID = $_POST['employeeID'];
 
     $insertCommentsql = "UPDATE fwarequestdb SET comment = '$comment', status = '$status' WHERE requestID = '$requestID'";
     if ($insertCommentResult = $con->query($insertCommentsql)) {
@@ -85,6 +91,15 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
         echo '<script>alert("Review unsuccessful: ' . $con->error . '")</script>';
     }
 
-     echo "<meta http-equiv='refresh' content='0'>";
+    if ($status == "Accepted") {
+        $updateEmployeeStatussql = "UPDATE employeedb SET fwaStatus = '$workType' WHERE employeeID = '$employeeID'";
+        if ($updateEmployeeStatusResult = $con->query($updateEmployeeStatussql)) {
+            echo '<script>alert("Employee status updated successfully!")</script>';
+        } else {
+            echo '<script>alert("Failed to update employee status: ' . $con->error . '")</script>';
+        }
+    }
+
+    echo "<meta http-equiv='refresh' content='0'>";
 }
 ?>
