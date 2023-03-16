@@ -1,6 +1,10 @@
 <?php
 session_start();
 include "dbConfig.php";
+
+// Delete outdated FWA requests
+$deleteOutdatedFWAsql = "DELETE FROM fwarequestdb WHERE requestDate < CURDATE()";
+$con->query($deleteOutdatedFWAsql);
 ?>
 
 <!DOCTYPE html>

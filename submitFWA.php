@@ -38,36 +38,37 @@ include "dbConfig.php";
                             <?php
                             $allWorkTypes = file("fwaWorkTypes.txt");
                             foreach ($allWorkTypes as $workType) {
-                                $fieldValues = explode(", ", $workType);
-                                echo '<option value="' . $fieldValues[0] . '">' . $fieldValues[1] . '</option>';
+                                echo '<option value="' . $workType . '">' . $workType . '</option>';
                             }
                             ?>
                         </select>
                     </div>
+                    <!-- Should be used in submitDailySchedule instead
                     <div class="form-group form-inline">
                         <label for="workHours" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Hours:</label>
                         <select name="workHours" id="workHours">
-                            <?php
+                            <?php /*
                             $allWorkHours = file("fwaWorkHours.txt");
                             foreach ($allWorkHours as $workHour) {
                                 $fieldValues = explode(", ", $workHour);
                                 echo '<option value="' . $fieldValues[0] . '">' . $fieldValues[1] . '</option>';
-                            }
+                            } */
                             ?>
                         </select>
                     </div>
                     <div class="form-group form-inline">
                         <label for="hLocation" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Location:</label>
                         <select name="hLocation" id="hLocation" disabled>
-                            <?php
+                            <?php /*
                             $hybridWorkLocations = file("fwaHybridLocations.txt");
                             foreach ($hybridWorkLocations as $workLocation) {
                                 $fieldValues = explode(", ", $workLocation);
                                 echo '<option value="' . $fieldValues[0] . '">' . $fieldValues[1] . '</option>';
-                            }
+                            } */
                             ?>
                         </select>
                     </div>
+                    -->
                     <div class="form-group form-inline">
                         <label for="description" class="col-lg-2 text-right" style="justify-content: flex-end;">Description:</label>
                         <input type="text" class="form-control sizing col-lg-10" id="description" name="description" placeholder="Enter Description" required>
@@ -94,6 +95,7 @@ include "dbConfig.php";
 </body>
 
 <script>
+    // Move to submitDailySchedule
     function toggleLocation() {
         var workType = document.getElementById("workType").value;
         var workLocation = document.getElementById("hLocation");
@@ -112,10 +114,10 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
     $supervisorID = $_SESSION['supervisorID'];
     $requestDate = $_POST['requestDate'];
     $workType = $_POST['workType'];
-    $workHours = $_POST['workHours'];
+    /* $workHours = $_POST['workHours'];
     if (!($workType == "FH" || $workType == "WFH")) {
         $hybridLocation = $_POST['hLocation'];
-    }
+    } */
     $description = $_POST['description'];
     $reason = $_POST['reason'];
 
@@ -123,11 +125,11 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
 
     if ($requestDate > $currentDate) {
         if ($workType == "FH" || $workType == "WFH") {
-            $insertSql = "INSERT INTO fwarequestdb (requestDate, workType, description, reason, status, workHours, employeeID, supervisorID)
-        VALUES ('$requestDate', '$workType', '$description', '$reason', 'Pending', '$workHours', '$employeeID', '$supervisorID')";
+            $insertSql = "INSERT INTO fwarequestdb (requestDate, workType, description, reason, status, /*workHours, */employeeID, supervisorID)
+        VALUES ('$requestDate', '$workType', '$description', '$reason', 'Pending', /*'$workHours', */'$employeeID', '$supervisorID')";
         } else {
-            $insertSql = "INSERT INTO fwarequestdb (requestDate, workType, description, reason, status, workHours, workLocation, employeeID, supervisorID)
-        VALUES ('$requestDate', '$workType', '$description', '$reason', 'Pending', '$workHours', '$hybridLocation', '$employeeID', '$supervisorID')";
+            $insertSql = "INSERT INTO fwarequestdb (requestDate, workType, description, reason, status, /*workHours, workLocation, */employeeID, supervisorID)
+        VALUES ('$requestDate', '$workType', '$description', '$reason', 'Pending', /*'$workHours', '$hybridLocation', */'$employeeID', '$supervisorID')";
         }
 
         if ($con->query($insertSql) === TRUE) {
