@@ -115,6 +115,9 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
 
         if ($con->query($insertSql) === true) {
             echo "<script>alert('Employee successfully registered!')</script>";
+            include 'registerEmployeeEmail.php';
+        } else {
+            echo "<script>alert('Error registering employee: " . $con->error . "')</script>";
         }
     }
 }

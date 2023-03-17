@@ -122,11 +122,18 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
     $description = $_POST['description'];
     $reason = $_POST['reason'];
 
+    $findSupervisorsql = "SELECT * FROM employeedb WHERE employeeID = '$supervisorID'";
+    if ($findSupervisorResult = $con->query($findSupervisorsql)) {
+        $row = mysqli_fetch_array($findSupervisorResult);
+        $email = $row['email'];
+    }
+
     $insertSql = "INSERT INTO fwarequestdb (requestDate, workType, description, reason, status, employeeID, supervisorID)
         VALUES ('$requestDate', '$workType', '$description', '$reason', 'Pending', '$employeeID', '$supervisorID')";
 
     if ($con->query($insertSql) === TRUE) {
         echo '<script>alert("FWA request submitted!")</script>';
+        include 'submitFWAEmail.php';
     } else {
         echo '<script>alert("Submission unsuccessful: ' . $con->error . '")</script>';
     }
