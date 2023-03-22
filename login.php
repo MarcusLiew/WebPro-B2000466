@@ -27,11 +27,11 @@ include "dbConfig.php";
           <form class="form" style="padding: 10px 10px 10px 10px;" action="login.php" method="POST">
             <div class="form-group">
               <label class="form-label text-light" for="employeeID">Employee ID:</label>
-              <input type="text" class="form-control" id="employeeID" name="employeeID" placeholder="Employee ID" />
+              <input type="text" class="form-control" id="employeeID" name="employeeID" placeholder="Employee ID" required/>
             </div>
             <div class="form-group">
               <label class="form-label text-light" for="password">Password:</label>
-              <input type="password" class="form-control" id="password" name="password" placeholder="Password" />
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password" required/>
             </div>
             <input type="submit" class="btn btn-warning" value="Log in" />
           </form>
@@ -66,11 +66,12 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
       $_SESSION['name'] = $employee['name'];
       $_SESSION['position'] = $employee['position'];
       $_SESSION['email'] = $employee['email'];
+      $_SESSION['supervisorID'] = $employee['supervisorID'];
       if ($_SESSION['position'] == "HR Admin") {
         header("Location: hrAdminDashboard.php");
       } else {
         $_SESSION['fwaStatus'] = $employee['fwaStatus'];
-        $_SESSION['supervisorID'] = $employee['supervisorID'];
+        $_SESSION['departmentID'] = $employee['deptID'];
         header("Location: employeeDashboard.php");
       }
     } else {

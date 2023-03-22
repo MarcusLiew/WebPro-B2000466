@@ -2,6 +2,13 @@
 session_start();
 include "dbConfig.php";
 
+$scheduleID = $_POST['scheduleID'];
+
+$getDailyScheduleSQL = "SELECT * FROM dailyscheduledb WHERE scheduleID = '$scheduleID'";
+$getDailyScheduleResult = $con->query($getDailyScheduleSQL);
+if($getDailyScheduleResult) {
+    $dailySchedule = mysqli_fetch_array($getDailyScheduleResult);
+}
 ?>
 
 <!DOCTYPE html>
@@ -16,74 +23,51 @@ include "dbConfig.php";
 </head>
 
 <body>
-    <?php include "employeeNavbar.php";
-    if ($_SESSION['fwaStatus'] == "New") {
-        echo '<script>alert("Your status is New, please change your password!");</script>';
-        echo '<meta http-equiv="refresh" content="0; url=profileSettings.php" />';
-    }
-    ?>
+    <?php include "employeeNavbar.php"; ?>
 
     <div class="container-fluid row" style="margin-top: 75px;">
         <div class="col-2"></div>
         <div class="col-8">
             <h1>Update Daily Schedule</h1>
             <div>
-                <form class="form" method="POST" style="margin: 10px 10px 10px 10px;">
-                
+                <form class="form" method="POST" action="updateDailyScheduleSQL.php" style="margin: 10px 10px 10px 10px;">
                     <div class="form-group form-inline">
                         <label for="employeeID" class="col-lg-2 text-right" style="justify-content: flex-end;">Employee ID:</label>
                         <input type="text" class="form-control sizing col-lg-10" id="employeeID" name="employeeID" value="<?php echo $_SESSION['employeeID']; ?>" readonly>
                     </div>
                     <div class="form-group form-inline">
-                        <label for="requestDate" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Date:</label>
-                        <input type="date" class="form-control sizing col-lg-10" id="workDate" name="workDate" value="<?php echo date('Y-m-d') ?>" readonly>
+                        <label for="workDate" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Date:</label>
+                        <input type="date" class="form-control sizing col-lg-10" id="workDate" name="workDate" value="<?php echo $dailySchedule['workDate'] ?>" disabled>
                     </div>
-                    <div class="form-group form-inline">
-                        <label for="workType" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Type:</label>
-                        <select name="workType" id="workType">
-                            <?php
-                            $allWorkTypes = file("fwaWorkTypes.txt");
-                            foreach ($allWorkTypes as $workType) {
-                                echo '<option value="' . $workType . '">' . $workType . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    
                     <div class="form-group form-inline">
                         <label for="workHours" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Hours:</label>
                         <select name="workHours" id="workHours">
-                            <?php 
-                            $allWorkHours = file("fwaWorkHours.txt");
-                            foreach ($allWorkHours as $workHour) {
-                                $fieldValues = explode(", ", $workHour);
+                            <?php
+                            $allWorkHours = file("dailyScheduleWorkHours.txt");
+                            foreach ($allWorkHours as $workHours) {
+                                $fieldValues = explode(", ", $workHours);
                                 echo '<option value="' . $fieldValues[0] . '">' . $fieldValues[1] . '</option>';
-                            } 
+                            }
                             ?>
                         </select>
                     </div>
                     <div class="form-group form-inline">
                         <label for="workLocation" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Location:</label>
                         <select name="workLocation" id="workLocation">
-                            <?php 
-                            $hybridWorkLocations = file("fwaHybridLocations.txt");
-                            foreach ($hybridWorkLocations as $workLocation) {
+                            <?php
+                            $workLocations = file("dailyScheduleLocations.txt");
+                            foreach ($workLocations as $workLocation) {
                                 $fieldValues = explode(", ", $workLocation);
                                 echo '<option value="' . $fieldValues[0] . '">' . $fieldValues[1] . '</option>';
-                            } 
+                            }
                             ?>
                         </select>
                     </div>
-                    
                     <div class="form-group form-inline">
                         <label for="workReport" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Report:</label>
                         <input type="text" class="form-control sizing col-lg-10" id="workReport" name="workReport" placeholder="Enter Work Report" required>
                     </div>
-                    
-                    <div class="form-group form-inline">
-                        <label for="supervisorID" class="col-lg-2 text-right" style="justify-content: flex-end;">Supervisor ID:</label>
-                        <input type="text" class="form-control sizing col-lg-10" id="supervisorID" name="supervisorID" value="<?php echo $_SESSION['supervisorID']; ?>" readonly>
-                    </div>
+                    <input hidden name="scheduleID" value="<?php echo $scheduleID ?>">
                     <container class="form-inline">
                         <div class="col-lg-2"></div>
                         <div class="col-lg-10" style="padding-left: 0px;">
@@ -96,38 +80,3 @@ include "dbConfig.php";
         <div class="col-2"></div>
     </div>
 </body>
-
-<script>
-    // Move to submitDailySchedule
-    function toggleLocation() {
-        var workType = document.getElementById("workType").value;
-        var workLocation = document.getElementById("workLocation");
-
-        if (workType == "FH" || workType == "WFH") {
-            workLocation.disabled = true;
-        } else {
-            workLocation.disabled = false;
-        }
-    }
-</script>
-
-<?php
-if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
-    
-    
-    $workDate = $_POST['workDate'];
-    $workLocation = $_POST['workLocation'];
-    $workHours = $_POST['workHours'];
-    $workReport = $_POST['workReport'];
-    $employeeID = $_POST['employeeID'];
-
-    
-    $insertSql = "UPDATE dailyscheduledb SET workDate ='$workDate', workLocation = '$workLocation', workHours = '$workHours' , workReport = '$workReport' WHERE employeeID = '$employeeID'";
-
-    if ($con->query($insertSql) === TRUE) {
-        echo '<script>alert("Daily schedule submitted!")</script>';
-    } else {
-        echo '<script>alert("Submission unsuccessful: ' . $con->error . '")</script>';
-    }
-}
-?>

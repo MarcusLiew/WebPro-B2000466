@@ -23,24 +23,24 @@ include "dbConfig.php";
     ?>
 
     <div class="container-fluid row" style="margin-top: 75px;">
-        <div class="col-2"></div>
-        <div class="col-8">
+        <div class="col-1"></div>
+        <div class="col-10">
             <h1>Review FWA Requests</h1>
             <table class="table table-bordered">
                 <thead class="bg-flexis-dark text-light">
-                    <th scope="col">Req. ID</th>
-                    <th scope="col">Request Date</th>
-                    <th scope="col">Work Type</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Reason</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Employee ID</th>
-                    <th scope="col">Comment</th>
+                    <th scope="col" style="width: 5%;">Req. ID</th>
+                    <th scope="col" style="width: 7.5%;">Request Date</th>
+                    <th scope="col" style="width: 12.5%;">Work Type</th>
+                    <th scope="col" style="width: 20%;">Description</th>
+                    <th scope="col" style="width: 20%;">Reason</th>
+                    <th scope="col" style="width: 5%;">Status</th>
+                    <th scope="col" style="width: 5%;">Employee ID</th>
+                    <th scope="col" style="width: 30%;">Comment</th>
                 </thead>
                 <tbody>
                     <?php
                     $currentEmpID = $_SESSION['employeeID'];
-                    $getFWAsql = "SELECT * FROM fwarequestdb WHERE supervisorID = '$currentEmpID'";
+                    $getFWAsql = "SELECT * FROM fwarequestdb WHERE supervisorID = '$currentEmpID' ORDER BY requestDate DESC, employeeID ASC";
                     if ($getFWAresult = $con->query($getFWAsql)) {
                         while ($row = mysqli_fetch_array($getFWAresult)) {
                             echo '<tr>';
@@ -66,9 +66,9 @@ include "dbConfig.php";
                                 echo '<button class="btn btn-success mt-1 mr-2" value="Accepted" name="status" type="submit">Accept</button>';
                                 echo '<button class="btn btn-danger mt-1 mr-2" value="Rejected" name="status" type="submit">Reject</button></form></td>';
                             } else if ($row['requestDate'] < date('Y-m-d') && $row['comment'] == null) {
-                                echo '<p class="font-italic">Request expired!</p>';
+                                echo '<p class="font-italic">Request expired!</p></td>';
                             } else {
-                                echo '<input class="pr-5 mr-2 w-100" type="text" value="' . $row['comment'] . '" disabled>';
+                                echo $row['comment'] . '</td>';
                             }
                             echo '</tr>';
                         }
@@ -77,7 +77,7 @@ include "dbConfig.php";
                 </tbody>
             </table>
         </div>
-        <div class="col-2"></div>
+        <div class="col-1"></div>
     </div>
 </body>
 
