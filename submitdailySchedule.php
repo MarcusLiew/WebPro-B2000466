@@ -10,7 +10,7 @@ include "dbConfig.php";
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
-    <title>Submit FWA Request</title>
+    <title>Submit Daily Schedule</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     <link rel="stylesheet" href="extra.css" />
 </head>
@@ -26,16 +26,17 @@ include "dbConfig.php";
     <div class="container-fluid row" style="margin-top: 75px;">
         <div class="col-2"></div>
         <div class="col-8">
-            <h1>Submit FWA Request</h1>
+            <h1>Submit Daily Schedule</h1>
             <div>
                 <form class="form" method="POST" style="margin: 10px 10px 10px 10px;">
+                
                     <div class="form-group form-inline">
                         <label for="employeeID" class="col-lg-2 text-right" style="justify-content: flex-end;">Employee ID:</label>
                         <input type="text" class="form-control sizing col-lg-10" id="employeeID" name="employeeID" value="<?php echo $_SESSION['employeeID']; ?>" readonly>
                     </div>
                     <div class="form-group form-inline">
-                        <label for="requestDate" class="col-lg-2 text-right" style="justify-content: flex-end;">Request Date:</label>
-                        <input type="date" class="form-control sizing col-lg-10" id="requestDate" name="requestDate" value="<?php echo date('Y-m-d') ?>" readonly>
+                        <label for="requestDate" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Date:</label>
+                        <input type="date" class="form-control sizing col-lg-10" id="workDate" name="workDate" value="<?php echo date('Y-m-d') ?>" readonly>
                     </div>
                     <div class="form-group form-inline">
                         <label for="workType" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Type:</label>
@@ -48,40 +49,37 @@ include "dbConfig.php";
                             ?>
                         </select>
                     </div>
-                    <!-- Should be used in submitDailySchedule instead
+                    
                     <div class="form-group form-inline">
                         <label for="workHours" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Hours:</label>
                         <select name="workHours" id="workHours">
-                            <?php /*
+                            <?php 
                             $allWorkHours = file("fwaWorkHours.txt");
                             foreach ($allWorkHours as $workHour) {
                                 $fieldValues = explode(", ", $workHour);
                                 echo '<option value="' . $fieldValues[0] . '">' . $fieldValues[1] . '</option>';
-                            } */
+                            } 
                             ?>
                         </select>
                     </div>
                     <div class="form-group form-inline">
-                        <label for="hLocation" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Location:</label>
-                        <select name="hLocation" id="hLocation" disabled>
-                            <?php /*
+                        <label for="workLocation" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Location:</label>
+                        <select name="workLocation" id="workLocation">
+                            <?php 
                             $hybridWorkLocations = file("fwaHybridLocations.txt");
                             foreach ($hybridWorkLocations as $workLocation) {
                                 $fieldValues = explode(", ", $workLocation);
                                 echo '<option value="' . $fieldValues[0] . '">' . $fieldValues[1] . '</option>';
-                            } */
+                            } 
                             ?>
                         </select>
                     </div>
-                    -->
+                    
                     <div class="form-group form-inline">
-                        <label for="description" class="col-lg-2 text-right" style="justify-content: flex-end;">Description:</label>
-                        <input type="text" class="form-control sizing col-lg-10" id="description" name="description" placeholder="Enter Description" required>
+                        <label for="workReport" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Report:</label>
+                        <input type="text" class="form-control sizing col-lg-10" id="workReport" name="workReport" placeholder="Enter Work Report" required>
                     </div>
-                    <div class="form-group form-inline">
-                        <label for="reason" class="col-lg-2 text-right" style="justify-content: flex-end;">Reason:</label>
-                        <input type="text" class="form-control sizing col-lg-10" id="reason" name="reason" placeholder="Enter Reason" required>
-                    </div>
+                    
                     <div class="form-group form-inline">
                         <label for="supervisorID" class="col-lg-2 text-right" style="justify-content: flex-end;">Supervisor ID:</label>
                         <input type="text" class="form-control sizing col-lg-10" id="supervisorID" name="supervisorID" value="<?php echo $_SESSION['supervisorID']; ?>" readonly>
@@ -89,7 +87,7 @@ include "dbConfig.php";
                     <container class="form-inline">
                         <div class="col-lg-2"></div>
                         <div class="col-lg-10" style="padding-left: 0px;">
-                            <button type="submit" class="btn btn-warning">Submit FWA Request</button>
+                            <button type="submit" class="btn btn-warning">Submit Daily Schedule</button>
                         </div>
                     </container>
                 </form>
@@ -103,7 +101,7 @@ include "dbConfig.php";
     // Move to submitDailySchedule
     function toggleLocation() {
         var workType = document.getElementById("workType").value;
-        var workLocation = document.getElementById("hLocation");
+        var workLocation = document.getElementById("workLocation");
 
         if (workType == "FH" || workType == "WFH") {
             workLocation.disabled = true;
@@ -115,25 +113,21 @@ include "dbConfig.php";
 
 <?php
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
-    $employeeID = $_SESSION['employeeID'];
-    $supervisorID = $_SESSION['supervisorID'];
-    $requestDate = $_POST['requestDate'];
-    $workType = $_POST['workType'];
-    $description = $_POST['description'];
-    $reason = $_POST['reason'];
+    
+    
+    $workDate = $_POST['workDate'];
+    $workLocation = $_POST['workLocation'];
+    $workHours = $_POST['workHours'];
+    $workReport = $_POST['workReport'];
+    $employeeID = $_POST['employeeID'];
 
-    $findSupervisorsql = "SELECT * FROM employeedb WHERE employeeID = '$supervisorID'";
-    if ($findSupervisorResult = $con->query($findSupervisorsql)) {
-        $row = mysqli_fetch_array($findSupervisorResult);
-        $email = $row['email'];
-    }
+    
 
-    $insertSql = "INSERT INTO fwarequestdb (requestDate, workType, description, reason, status, employeeID, supervisorID)
-        VALUES ('$requestDate', '$workType', '$description', '$reason', 'Pending', '$employeeID', '$supervisorID')";
+    $insertSql = "INSERT INTO dailyscheduledb (workDate, workLocation,workHours,workReport, employeeID)
+        VALUES ('$workDate', '$workLocation','$workHours','$workReport', '$employeeID')";
 
     if ($con->query($insertSql) === TRUE) {
-        echo '<script>alert("FWA request submitted!")</script>';
-        include 'submitFWAEmail.php';
+        echo '<script>alert("Daily schedule submitted!")</script>';
     } else {
         echo '<script>alert("Submission unsuccessful: ' . $con->error . '")</script>';
     }
