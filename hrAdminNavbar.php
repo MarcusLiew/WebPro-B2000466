@@ -10,9 +10,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link 
-                <?php if (basename($_SERVER['PHP_SELF']) == 'viewFWAAnalytics.php') {
+                <?php if (basename($_SERVER['PHP_SELF']) == 'viewAnalytics.php' || basename($_SERVER['PHP_SELF']) == 'viewAnalytics2.php') {
                     echo 'active';
-                } ?>" href="viewFWAAnalytics.php">View FWA Analytics</a>
+                } ?>" href="viewAnalytics.php">View FWA Analytics</a>
             </li>
         </ul>
 
@@ -24,7 +24,7 @@
                 } ?>" href="profileSettings.php">Profile Settings</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="login.php">Log Out</a>
+                <a class="nav-link" href="logout.php">Log Out</a>
             </li>
         </ul>
     </div>

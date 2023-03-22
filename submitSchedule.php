@@ -26,7 +26,7 @@ include "dbConfig.php";
     <div class="container-fluid row" style="margin-top: 75px;">
         <div class="col-2"></div>
         <div class="col-8">
-            <h1>Submit FWA Request</h1>
+            <h1>Submit schedule</h1>
             <div>
                 <form class="form" method="POST" style="margin: 10px 10px 10px 10px;">
                     <div class="form-group form-inline">
@@ -48,6 +48,32 @@ include "dbConfig.php";
                             ?>
                         </select>
                     </div>
+                    <!-- Should be used in submitDailySchedule instead
+                    <div class="form-group form-inline">
+                        <label for="workHours" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Hours:</label>
+                        <select name="workHours" id="workHours">
+                            <?php /*
+                            $allWorkHours = file("fwaWorkHours.txt");
+                            foreach ($allWorkHours as $workHour) {
+                                $fieldValues = explode(", ", $workHour);
+                                echo '<option value="' . $fieldValues[0] . '">' . $fieldValues[1] . '</option>';
+                            } */
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group form-inline">
+                        <label for="hLocation" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Location:</label>
+                        <select name="hLocation" id="hLocation" disabled>
+                            <?php /*
+                            $hybridWorkLocations = file("fwaHybridLocations.txt");
+                            foreach ($hybridWorkLocations as $workLocation) {
+                                $fieldValues = explode(", ", $workLocation);
+                                echo '<option value="' . $fieldValues[0] . '">' . $fieldValues[1] . '</option>';
+                            } */
+                            ?>
+                        </select>
+                    </div>
+                    -->
                     <div class="form-group form-inline">
                         <label for="description" class="col-lg-2 text-right" style="justify-content: flex-end;">Description:</label>
                         <input type="text" class="form-control sizing col-lg-10" id="description" name="description" placeholder="Enter Description" required>
@@ -73,6 +99,20 @@ include "dbConfig.php";
     </div>
 </body>
 
+<script>
+    // Move to submitDailySchedule
+    function toggleLocation() {
+        var workType = document.getElementById("workType").value;
+        var workLocation = document.getElementById("hLocation");
+
+        if (workType == "FH" || workType == "WFH") {
+            workLocation.disabled = true;
+        } else {
+            workLocation.disabled = false;
+        }
+    }
+</script>
+
 <?php
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
     $employeeID = $_SESSION['employeeID'];
@@ -82,26 +122,13 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
     $description = $_POST['description'];
     $reason = $_POST['reason'];
 
-    $findFWASql = "SELECT * FROM fwarequestdb WHERE employeeID = '$employeeID' AND requestDate = '$requestDate' AND status NOT IN ('Rejected');";
-    $findFWAResult = $con->query($findFWASql);
-    if ($findFWAResult->num_rows == 0) {
-        $findSupervisorsql = "SELECT * FROM employeedb WHERE employeeID = '$supervisorID'";
-        if ($findSupervisorResult = $con->query($findSupervisorsql)) {
-            $row = mysqli_fetch_array($findSupervisorResult);
-            $email = $row['email'];
-        }
-
-        $insertFWASql = "INSERT INTO fwarequestdb (requestDate, workType, description, reason, status, employeeID, supervisorID)
+    $insertSql = "INSERT INTO fwarequestdb (requestDate, workType, description, reason, status, employeeID, supervisorID)
         VALUES ('$requestDate', '$workType', '$description', '$reason', 'Pending', '$employeeID', '$supervisorID')";
 
-        if ($con->query($insertFWASql) === TRUE) {
-            echo '<script>alert("FWA request submitted!")</script>';
-            include 'submitFWAEmail.php';
-        } else {
-            echo '<script>alert("Submission unsuccessful: ' . $con->error . '")</script>';
-        }
+    if ($con->query($insertSql) === TRUE) {
+        echo '<script>alert("FWA request submitted!")</script>';
     } else {
-        echo '<script>alert("FWA Request for this date exists! You can submit a new one if this request gets rejected!")</script>';
+        echo '<script>alert("Submission unsuccessful: ' . $con->error . '")</script>';
     }
 }
 ?>
