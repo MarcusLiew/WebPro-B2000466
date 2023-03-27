@@ -14,51 +14,52 @@ $_SESSION['fwaStatus'] = $fwaStatus;
     <a class="navbar-brand" href="employeeDashboard.php">FlexIS</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link 
-                <?php if (basename($_SERVER['PHP_SELF']) == 'submitFWA.php') {
-                    echo 'active';
+            <?php if ($_SESSION['position'] == "Employee" || $_SESSION['supervisorID']) {
+                echo '<li class="nav-item">';
+                echo '<a class="nav-link';
+                if (basename($_SERVER['PHP_SELF']) == 'submitFWA.php') {
+                    echo ' active';
                 }
-                if (!$_SESSION['supervisorID']) {
-                    echo 'disabled';
-                } ?>" href="submitFWA.php">Submit FWA</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link 
-                <?php if (basename($_SERVER['PHP_SELF']) == 'reviewFWA.php') {
-                    echo 'active';
+                echo '" href="submitFWA.php">Submit FWA</a>';
+                echo '</li>';
+            }
+            if ($_SESSION['position'] != "Employee") {
+                echo '<li class="nav-item">';
+                echo '<a class="nav-link';
+                if (basename($_SERVER['PHP_SELF']) == 'reviewFWA.php') {
+                    echo ' active';
                 }
-                if ($_SESSION['position'] != 'Supervisor') {
-                    echo 'disabled';
-                } ?>" href="reviewFWA.php">Review FWA</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link 
-                <?php if (basename($_SERVER['PHP_SELF']) == 'dailySchedule.php' || basename($_SERVER['PHP_SELF']) == 'updateDailySchedule.php' || basename($_SERVER['PHP_SELF']) == 'submitDailySchedule.php') {
-                    echo 'active';
+                echo '" href="reviewFWA.php">Review FWA</a>';
+                echo '</li>';
+            }
+            if ($_SESSION['position'] == "Employee" || $_SESSION['supervisorID']) {
+                echo '<li class="nav-item">';
+                echo '<a class="nav-link';
+                if (basename($_SERVER['PHP_SELF']) == 'dailySchedule.php' || basename($_SERVER['PHP_SELF']) == 'updateDailySchedule.php' || basename($_SERVER['PHP_SELF']) == 'submitDailySchedule.php') {
+                    echo ' active';
                 }
-                if (!$_SESSION['supervisorID']) {
-                    echo 'disabled';
-                } ?>" href="dailySchedule.php">Submit Daily Schedule</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link 
-                <?php if (basename($_SERVER['PHP_SELF']) == 'reviewDailySchedule.php') {
-                    echo 'active';
+                echo '" href="dailySchedule.php">Submit Daily Schedule</a>';
+                echo '</li>';
+            }
+            if ($_SESSION['position'] != "Employee") {
+                echo '<li class="nav-item">';
+                echo '<a class="nav-link';
+                if (basename($_SERVER['PHP_SELF']) == 'reviewDailySchedule.php') {
+                    echo ' active';
                 }
-                if ($_SESSION['position'] != 'Supervisor') {
-                    echo 'disabled';
-                } ?>" href="reviewDailySchedule.php">Review Daily Schedule</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link 
-                <?php if (basename($_SERVER['PHP_SELF']) == 'viewAnalytics.php' || basename($_SERVER['PHP_SELF']) == 'viewAnalytics2.php') {
-                    echo 'active';
+                echo '" href="reviewDailySchedule.php">Review Daily Schedule</a>';
+                echo '</li>';
+            }
+            if ($_SESSION['position'] != "Employee") {
+                echo '<li class="nav-item">';
+                echo '<a class="nav-link';
+                if (basename($_SERVER['PHP_SELF']) == 'viewAnalytics.php' || basename($_SERVER['PHP_SELF']) == 'viewAnalytics2.php') {
+                    echo ' active';
                 }
-                if ($_SESSION['position'] != 'Supervisor') {
-                    echo 'disabled';
-                } ?>" href="viewAnalytics.php">View FWA Analytics</a>
-            </li>
+                echo '" href="viewAnalytics.php">View FWA Analytics</a>';
+                echo '</li>';
+            }
+            ?>
         </ul>
 
         <ul class="navbar-nav">
