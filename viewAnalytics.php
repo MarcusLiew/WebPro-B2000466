@@ -150,12 +150,12 @@ switch ($departmentID) {
                             <label for="endDate" class="col-lg-2 text-right" style="justify-content: flex-end;">End Date:</label>
                             <input type="date" class="form-control sizing col-lg-10" id="endDate" name="endDate" required>
                         </div>
-                        <container class="form-inline">
+                        <div class="form-inline">
                             <div class="col-lg-2"></div>
                             <div class="col-lg-10" style="padding-left: 0px;">
-                                <button type="submit" class="btn btn-primary" name="submit">View Summary</button>
+                                <button type="submit" class="btn btn-warning" name="submit">View Summary</button>
                             </div>
-                        </container>
+                        </div>
                     </form>
                 </div>
             </div>

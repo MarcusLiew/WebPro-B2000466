@@ -92,7 +92,6 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
     $findEmployeesql = "SELECT * FROM employeedb WHERE employeeID = '$employeeID'";
     if ($findEmployeeResult = $con->query($findEmployeesql)) {
         $row = mysqli_fetch_array($findEmployeeResult);
-        $email = $row['email'];
     }
 
     $insertCommentsql = "UPDATE fwarequestdb SET comment = '$comment', status = '$status' WHERE requestID = '$requestID'";
@@ -111,7 +110,6 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
         }
     }
 
-    include 'reviewFWAEmail.php';
     echo "<meta http-equiv='refresh' content='0'>";
 }
 ?>

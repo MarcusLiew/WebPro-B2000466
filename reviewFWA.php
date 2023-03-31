@@ -56,9 +56,9 @@ include "dbConfig.php";
                                 echo ' class="bg-danger"';
                             }
                             echo '>' . $row['status'] . '</td>';
-                            echo '<td>' . $row['employeeID'] . '</td>';
-                            echo '<td><form method="POST" class="form">';
+                            echo '<td>' . $row['employeeID'] . '</td><td>';
                             if ($row['status'] == "Pending" && $row['requestDate'] >= date('Y-m-d')) {
+                                echo '<form method="POST" class="form">';
                                 echo '<input class="pr-5 mr-2 mb-2 w-100" type="text" name="comment" placeholder="Enter comment" id="comment" /><br>';
                                 echo '<input type="hidden" value="' . $row['requestID'] . '" name="requestID" />';
                                 echo '<input type="hidden" value="' . $row['workType'] . '" name="workType" />';
@@ -92,7 +92,6 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
     $findEmployeesql = "SELECT * FROM employeedb WHERE employeeID = '$employeeID'";
     if ($findEmployeeResult = $con->query($findEmployeesql)) {
         $row = mysqli_fetch_array($findEmployeeResult);
-        $email = $row['email'];
     }
 
     $insertCommentsql = "UPDATE fwarequestdb SET comment = '$comment', status = '$status' WHERE requestID = '$requestID'";
@@ -111,7 +110,6 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
         }
     }
 
-    include 'reviewFWAEmail.php';
     echo "<meta http-equiv='refresh' content='0'>";
 }
 ?>

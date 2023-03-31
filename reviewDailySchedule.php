@@ -51,7 +51,7 @@ $supervisorID = $_SESSION['employeeID'];
                                 echo '<input class="pr-5 mr-2 mb-2 w-100" type="text" name="supervisorComments" placeholder="Enter comment" id="supervisorComments"/><br>';
                                 echo '<input type="hidden" value="' . $row['scheduleID'] . '" name="scheduleID" />';
                                 echo '<button class="btn btn-warning mt-1 mr-2" type="submit">Save Comment</button></form></td>';
-                            } else if ($row['workDate'] < date('Y-m-d')) {
+                            } else if ($row['workDate'] < date('Y-m-d') && $row['supervisorComments'] == null) {
                                 echo '<p class="font-italic">Daily schedule expired, no comment!</p></td>';
                             } else {
                                 echo $row['supervisorComments'] . '</td>';

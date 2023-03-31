@@ -60,12 +60,12 @@ include "dbConfig.php";
                         <label for="workReport" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Report:</label>
                         <input type="text" class="form-control sizing col-lg-10" id="workReport" name="workReport" placeholder="Enter Work Report" required>
                     </div>
-                    <container class="form-inline">
+                    <div class="form-inline">
                         <div class="col-lg-2"></div>
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <button type="submit" class="btn btn-warning">Submit Daily Schedule</button>
                         </div>
-                    </container>
+                    </div>
                 </form>
             </div>
         </div>

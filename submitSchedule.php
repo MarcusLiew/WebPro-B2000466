@@ -86,12 +86,12 @@ include "dbConfig.php";
                         <label for="supervisorID" class="col-lg-2 text-right" style="justify-content: flex-end;">Supervisor ID:</label>
                         <input type="text" class="form-control sizing col-lg-10" id="supervisorID" name="supervisorID" value="<?php echo $_SESSION['supervisorID']; ?>" readonly>
                     </div>
-                    <container class="form-inline">
+                    <div class="form-inline">
                         <div class="col-lg-2"></div>
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <button type="submit" class="btn btn-warning">Submit FWA Request</button>
                         </div>
-                    </container>
+                    </div>
                 </form>
             </div>
         </div>
