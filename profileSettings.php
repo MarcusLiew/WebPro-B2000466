@@ -33,23 +33,23 @@ include "dbConfig.php";
                         <input type="text" class="form-control sizing col-lg-10" id="employeeID" name="employeeID" value="<?php echo $_SESSION['employeeID']; ?>" readonly>
                     </div>
                     <div class="form-group form-inline">
-                        <label for="name" class="col-lg-2 text-right" style="justify-content: flex-end;">Current password:</label>
+                        <label for="currentPassword" class="col-lg-2 text-right" style="justify-content: flex-end;">Current password:</label>
                         <input type="password" class="form-control sizing col-lg-10" id="currentPassword" name="currentPassword" placeholder="Enter current password" required>
                     </div>
                     <div class="form-group form-inline">
-                        <label for="email" class="col-lg-2 text-right" style="justify-content: flex-end;">New password:</label>
+                        <label for="newPassword" class="col-lg-2 text-right" style="justify-content: flex-end;">New password:</label>
                         <input type="password" class="form-control sizing col-lg-10" id="newPassword" name="newPassword" placeholder="Enter new password" required>
                     </div>
                     <div class="form-group form-inline">
-                        <label for="supervisorID" class="col-lg-2 text-right" style="justify-content: flex-end;">Confirm password:</label>
+                        <label for="confirmPassword" class="col-lg-2 text-right" style="justify-content: flex-end;">Confirm password:</label>
                         <input type="password" class="form-control sizing col-lg-10" id="confirmPassword" name="confirmPassword" placeholder="Confirm password">
                     </div>
-                    <container class="form-inline">
+                    <div class="form-inline">
                         <div class="col-lg-2"></div>
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <input type="submit" name="submit" class="btn btn-warning" value="Update Password" />
                         </div>
-                    </container>
+                    </div>
                 </form>
             </div>
         </div>

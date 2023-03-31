@@ -23,7 +23,7 @@ include "dbConfig.php";
     <div class="row">
       <div class="col-lg-5">
         <div class="container bg-flexis-dark rounded">
-          <h1 class="text-center font-weight-bold text-light" style="padding-top: 10px;">FlexIS</h1>
+          <h1 class="text-center font-weight-bold text-light pt-1">FlexIS</h1>
           <form class="form" style="padding: 10px 10px 10px 10px;" action="login.php" method="POST">
             <div class="form-group">
               <label class="form-label text-light" for="employeeID">Employee ID:</label>

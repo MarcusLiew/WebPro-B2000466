@@ -31,11 +31,11 @@ include "dbConfig.php";
                 <form class="form" method="POST" style="margin: 10px 10px 10px 10px;">
                     <div class="form-group form-inline">
                         <label for="employeeID" class="col-lg-2 text-right" style="justify-content: flex-end;">Employee ID:</label>
-                        <input type="text" class="form-control sizing col-lg-10" id="employeeID" name="employeeID" value="<?php echo $_SESSION['employeeID']; ?>" readonly>
+                        <input type="text" class="form-control col-lg-10" id="employeeID" name="employeeID" value="<?php echo $_SESSION['employeeID']; ?>" readonly>
                     </div>
                     <div class="form-group form-inline">
                         <label for="requestDate" class="col-lg-2 text-right" style="justify-content: flex-end;">Request Date:</label>
-                        <input type="date" class="form-control sizing col-lg-10" id="requestDate" name="requestDate" value="<?php echo date('Y-m-d') ?>" readonly>
+                        <input type="date" class="form-control col-lg-10" id="requestDate" name="requestDate" value="<?php echo date('Y-m-d') ?>" readonly>
                     </div>
                     <div class="form-group form-inline">
                         <label for="workType" class="col-lg-2 text-right" style="justify-content: flex-end;">Work Type:</label>
@@ -50,22 +50,22 @@ include "dbConfig.php";
                     </div>
                     <div class="form-group form-inline">
                         <label for="description" class="col-lg-2 text-right" style="justify-content: flex-end;">Description:</label>
-                        <input type="text" class="form-control sizing col-lg-10" id="description" name="description" placeholder="Enter Description" required>
+                        <input type="text" class="form-control col-lg-10" id="description" name="description" placeholder="Enter Description" required>
                     </div>
                     <div class="form-group form-inline">
                         <label for="reason" class="col-lg-2 text-right" style="justify-content: flex-end;">Reason:</label>
-                        <input type="text" class="form-control sizing col-lg-10" id="reason" name="reason" placeholder="Enter Reason" required>
+                        <input type="text" class="form-control col-lg-10" id="reason" name="reason" placeholder="Enter Reason" required>
                     </div>
                     <div class="form-group form-inline">
                         <label for="supervisorID" class="col-lg-2 text-right" style="justify-content: flex-end;">Supervisor ID:</label>
-                        <input type="text" class="form-control sizing col-lg-10" id="supervisorID" name="supervisorID" value="<?php echo $_SESSION['supervisorID']; ?>" readonly>
+                        <input type="text" class="form-control col-lg-10" id="supervisorID" name="supervisorID" value="<?php echo $_SESSION['supervisorID']; ?>" readonly>
                     </div>
-                    <container class="form-inline">
+                    <div class="form-inline">
                         <div class="col-lg-2"></div>
                         <div class="col-lg-10" style="padding-left: 0px;">
                             <button type="submit" class="btn btn-warning">Submit FWA Request</button>
                         </div>
-                    </container>
+                    </div>
                 </form>
             </div>
         </div>
@@ -88,7 +88,6 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
         $findSupervisorsql = "SELECT * FROM employeedb WHERE employeeID = '$supervisorID'";
         if ($findSupervisorResult = $con->query($findSupervisorsql)) {
             $row = mysqli_fetch_array($findSupervisorResult);
-            $email = $row['email'];
         }
 
         $insertFWASql = "INSERT INTO fwarequestdb (requestDate, workType, description, reason, status, employeeID, supervisorID)
@@ -96,7 +95,6 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == "POST") {
 
         if ($con->query($insertFWASql) === TRUE) {
             echo '<script>alert("FWA request submitted!")</script>';
-            include 'submitFWAEmail.php';
         } else {
             echo '<script>alert("Submission unsuccessful: ' . $con->error . '")</script>';
         }
