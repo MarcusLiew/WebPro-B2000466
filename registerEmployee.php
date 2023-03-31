@@ -39,7 +39,7 @@ include "dbConfig.php";
                             $allPositions = file("positions.txt");
                             foreach ($allPositions as $position) {
                                 $fieldValues = explode(", ", $position);
-                                echo '<option value="' . $fieldValues[1] . '">' . $fieldValues[1] . '</option>';
+                                echo '<option value="' . $fieldValues[1] . '">' . $fieldValues[2] . '</option>';
                             }
                             ?>
                         </select>
