@@ -14,7 +14,7 @@ $_SESSION['fwaStatus'] = $fwaStatus;
     <a class="navbar-brand" href="employeeDashboard.php">FlexIS</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <?php if ($_SESSION['position'] == "Employee" || $_SESSION['supervisorID']) {
+            <?php if ($_SESSION['position'] == "Employee" && $_SESSION['supervisorID']) {
                 echo '<li class="nav-item">';
                 echo '<a class="nav-link';
                 if (basename($_SERVER['PHP_SELF']) == 'submitFWA.php') {
@@ -32,7 +32,7 @@ $_SESSION['fwaStatus'] = $fwaStatus;
                 echo '" href="reviewFWA.php">Review FWA</a>';
                 echo '</li>';
             }
-            if ($_SESSION['position'] == "Employee" || $_SESSION['supervisorID']) {
+            if ($_SESSION['position'] == "Employee" && $_SESSION['supervisorID']) {
                 echo '<li class="nav-item">';
                 echo '<a class="nav-link';
                 if (basename($_SERVER['PHP_SELF']) == 'dailySchedule.php' || basename($_SERVER['PHP_SELF']) == 'updateDailySchedule.php' || basename($_SERVER['PHP_SELF']) == 'submitDailySchedule.php') {
